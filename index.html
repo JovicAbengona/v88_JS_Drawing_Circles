@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Village88 JavaScript Track | Drawing Circles</title>
+        <style>
+            * {
+                padding: 0;
+                margin: 0;
+            }
+
+            body {
+                font-family: Arial, Helvetica, sans-serif;
+            }
+
+            section{
+                padding: 15px;
+            }
+
+            button{
+                margin-right: 15px;
+                border-radius: 4px;
+                padding: 10px 15px;
+                font-weight: 600;
+                border: none;
+                width: 100px;
+            }
+
+            button:hover {
+                cursor: pointer;
+            }
+
+            .green {
+                background-color: #52b788;
+                color: white;
+            }
+
+            .blue {
+                background-color: #0077b6;
+                color: white;
+            }
+
+            .red {
+                background-color: #e63946;
+                color: white;
+            }
+
+            .reset{
+                float: right;
+            }
+
+            #canvas{
+                margin-top: 10px;
+                min-height: 85vh;
+                width: 100%;
+                z-index: 1;
+            }
+        </style>
+    </head>
+    <body>
+        <section>
+            <button class="colorBtn green" value="52b788">Green</button>
+            <button class="colorBtn blue" value="0077b6">Blue</button>
+            <button class="colorBtn red" value="e63946">Red</button>
+            <button class="reset">Reset</button>
+            <div id="canvas"></div>
+        </section>
+        <script>
+            let currentColor = "#52b788";
+            const canvas = document.getElementById("canvas");
+            const buttons = document.querySelectorAll(".colorBtn");
+            const reset = document.querySelector(".reset");
+
+            reset.addEventListener("click", function(){
+                canvas.innerHTML = "";
+            });
+
+            buttons.forEach(function(currentBtn){
+                currentBtn.addEventListener("click", setColor);
+            });
+
+            function setColor(){
+                currentColor = `#${this.value}`;
+            }
+
+            canvas.addEventListener("click", function(event){
+                let size = Math.floor(Math.random() * (300 - 50 + 1)) + 50;
+                const div = document.createElement("div");
+                div.style.backgroundColor = currentColor;
+                div.style.position = "absolute";
+                
+                div.style.borderRadius = "50%";
+
+                const drawCircle = setInterval(function(){
+                    size--;
+                    div.style.top = `${event.clientY - size / 2}px`;
+                    div.style.left = `${event.clientX - size / 2}px`;
+                    div.style.width = `${size}px`; 
+                    div.style.height = `${size}px`; 
+
+                    if(size == 0){
+                        clearInterval(drawCircle);
+                        div.remove();
+                    }
+                }, 30);
+
+                canvas.append(div);
+            });
+        </script>
+    </body>
+</html>
